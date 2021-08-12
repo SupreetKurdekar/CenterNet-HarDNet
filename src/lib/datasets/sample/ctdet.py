@@ -31,6 +31,8 @@ class CTDetDataset(data.Dataset):
   
   
   def img_transform(self, img, anns, flip_en=True, scale_lv=2, out_shift=None, crop=None):
+    
+
     height, width = img.shape[0], img.shape[1]
     c = np.array([img.shape[1] / 2., img.shape[0] / 2.], dtype=np.float32)
     if self.opt.keep_res:
@@ -94,14 +96,40 @@ class CTDetDataset(data.Dataset):
     output_w = input_w // self.opt.down_ratio
     
     num_objs = min(len(anns), self.max_objs)
+    # print("NNNNNNNNNNNNN")
+    # print(num_objs)
+    # print("num of anns",len(anns))
+    # print(anns)
     ann_list = []
     
     border_xy, border_idx = get_border_coord(trans_inv, width, height, crop)
     
     for k in range(num_objs):
       ann = anns[k]
+
+      temp = ann['category_id']
+
+      # print("temp")
+      
+      if(temp not in list(self.cat_ids.keys())):
+        # print("ignored")
+        # print(temp)
+
+        continue
+
       bbox = self._coco_box_to_bbox(ann['bbox'])
+
+      # print(self.cat_ids)
+      # print(ann)
       cls_id = int(self.cat_ids[ann['category_id']])
+
+      # try:
+      #   cls_id = int(self.cat_ids[ann['category_id']])
+      # except KeyError:
+      #   print(ann)
+      #   print("ann#############")
+      #   break
+        
       if flipped:
           bbox[[0, 2]] = width - bbox[[2, 0]]
       bbox[:2] = affine_transform(bbox[:2], trans_input)
