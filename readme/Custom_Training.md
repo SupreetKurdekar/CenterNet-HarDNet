@@ -1,6 +1,6 @@
 # Changes made for custom training
 
-## Custom dataset class adde to datasets - coco_custom.py
+## Custom dataset class added to datasets - coco_custom.py
 
 Here add class ids of required ids to self._valid_ids
 
@@ -10,7 +10,7 @@ only required class images are extracted from the COCO dataset to make the custo
 
 the img_transform function now handles the annotations only for required classes and ignores extra classes in the images.
 
-## datset_factory.py updated to read COCO_custom.
+## datset_factory.py updated to hold COCO_custom class
 
 ## exp/ctdet/hardnet68/log
 
